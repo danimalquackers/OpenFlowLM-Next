@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Benchmarks &amp; Hardware Leaderboard on OpenFlowLM</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/benchmarks/</link><description>Recent content in Benchmarks &amp; Hardware Leaderboard on OpenFlowLM</description><generator>Hugo</generator><language>en-US</language><atom:link href="https://danimalquackers.github.io/OpenFlowLM-Next/benchmarks/index.xml" rel="self" type="application/rss+xml"/><item><title>Benchmark Run Detail</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/benchmarks/detail/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/benchmarks/detail/</guid><description>&lt;div data-cb-page="detail">
+&lt;div id="cb-detail-banner" class="alert alert-info d-none mb-4" role="status">
+&lt;div class="small mb-0">&lt;strong>Verified Seed Run:&lt;/strong> Bundled repository hardware dataset. Pick another run below or return to &lt;a href="../">Benchmarks&lt;/a>.&lt;/div>
+&lt;/div>
+&lt;div id="cb-detail-picker-wrap" class="oflm-filter-bar d-none mb-4">
+&lt;div>
+&lt;label for="cb-detail-picker">Inspect Verified Run&lt;/label>
+&lt;select id="cb-detail-picker">&lt;/select>
+&lt;/div>
+&lt;/div>
+&lt;div id="cb-detail">
+&lt;p style="color: var(--oflm-muted);">Loading benchmark run details...&lt;/p>
+&lt;/div>
+&lt;/div></description></item><item><title>Submit Benchmark Results</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/benchmarks/submit/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/benchmarks/submit/</guid><description>&lt;div data-cb-page="submit">
+&lt;h2 id="one-command-cli-upload">One-Command CLI Upload&lt;/h2>
+&lt;p>Pass &lt;code>--submit&lt;/code> to &lt;code>oflm bench&lt;/code> or &lt;code>oflm bench-embed&lt;/code> while your PC is plugged in and idle:&lt;/p>
+&lt;div class="oflm-codeblock">&lt;pre class="language-bash">&lt;code>oflm bench qwen3.5:4b --submit
+oflm bench-embed bge-base:en-v1.5 --max-batch 128 --bench-iterations 3 --submit&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>On first upload, OpenFlowLM prompts once before attaching processor model, RAM size, operating system, and a random install ID.&lt;/p>
+&lt;h2 id="manual-csv-upload">Manual CSV Upload&lt;/h2>
+&lt;p>Load or paste a saved &lt;code>bench_*.csv&lt;/code> or &lt;code>bench_embed_*.csv&lt;/code> file from an offline machine:&lt;/p>
+&lt;div class="oflm-card mt-3">
+&lt;form id="cb-submit">
+&lt;div class="oflm-form-grid">
+&lt;label>
+Model Tag *
+&lt;input type="text" id="s-model" required placeholder="e.g. qwen3.5:4b or bge-base:en-v1.5" />
+&lt;/label>
+&lt;label>
+Capability *
+&lt;select id="s-task" required>
+&lt;option value="LLM">Chat &amp;amp; Reasoning&lt;/option>
+&lt;option value="Embedding">Embeddings&lt;/option>
+&lt;option value="VLM">Vision&lt;/option>
+&lt;option value="ASR">Speech-to-Text&lt;/option>
+&lt;option value="Image">Image Generation&lt;/option>
+&lt;/select>
+&lt;/label>
+&lt;label>
+Laptop or Mini-PC Model *
+&lt;input type="text" id="s-hardware" required placeholder="e.g. ASUS Zenbook S 16 (Ryzen AI 9 HX 370)" />
+&lt;/label>
+&lt;label>
+Processor *
+&lt;input type="text" id="s-cpu" required placeholder="e.g. AMD Ryzen AI 9 HX 370" />
+&lt;/label>
+&lt;label>
+System Memory (GB) *
+&lt;input type="number" id="s-ram" min="8" max="512" step="1" required placeholder="32" />
+&lt;/label>
+&lt;label>
+Runtime *
+&lt;input type="text" id="s-backend" required placeholder="e.g. NPU Runtime (auto-filled from CLI)" value="OpenFlowLM NPU" />
+&lt;/label>
+&lt;label>
+Quantization *
+&lt;input type="text" id="s-quant" required placeholder="e.g. Q4_1, Q4_K_M, Q8_0, BF16" />
+&lt;/label>
+&lt;label>
+OpenFlowLM Version *
+&lt;input type="text" id="s-version" required placeholder="0.1.0" value="0.1.0" />
+&lt;/label>
+&lt;label>
+Operating System *
+&lt;input type="text" id="s-os" required placeholder="e.g. Windows 11 or Ubuntu 24.04" />
+&lt;/label>
+&lt;label>
+Iterations per Stage
+&lt;input type="number" id="s-runs" min="1" max="50" step="1" value="3" />
+&lt;/label>
+&lt;label class="oflm-form-full">
+Load Local CSV File (optional)
+&lt;input type="file" id="s-file" accept=".csv,text/csv,text/plain" />
+&lt;/label>
+&lt;label class="oflm-form-full">
+Benchmark CSV Output *
+&lt;textarea id="s-csv" rows="8" required placeholder="# Paste the full contents of bench_&lt;model>_&lt;date>.csv here...">&lt;/textarea>
+&lt;/label>
+&lt;/div>
+&lt;div class="d-flex flex-wrap align-items-center gap-3 mt-3">
+&lt;button type="submit" class="btn btn-primary">Submit Benchmark Run&lt;/button>
+&lt;div id="cb-msg" class="small" style="color: var(--oflm-muted);" aria-live="polite">&lt;/div>
+&lt;/div>
+&lt;/form>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

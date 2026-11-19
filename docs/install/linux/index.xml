@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on OpenFlowLM</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/</link><description>Recent content in Linux on OpenFlowLM</description><generator>Hugo</generator><language>en-US</language><atom:link href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>Packages</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/packages/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/packages/</guid><description>&lt;p>Install native &lt;code>.deb&lt;/code>, &lt;code>.rpm&lt;/code>, or portable &lt;code>.tar.gz&lt;/code> packages into &lt;code>/opt/openflowlm&lt;/code> and configure the &lt;code>amdxdna&lt;/code> kernel driver and XRT runtime on &lt;code>x86_64&lt;/code> Linux.&lt;/p>
+&lt;div class="alert alert-success d-flex my-3" role="alert">
+ &lt;div class="flex-shrink-1 alert-icon">
+ &lt;span class="material-icons size-20 me-2">lightbulb&lt;/span>
+ &lt;/div>
+ &lt;div class="w-100">
+ &lt;p>Running containers or Nix? Follow the &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/docker/">Docker&lt;/a>
+ or &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/nix/">Nix &amp;amp; NixOS&lt;/a>
+ guides. Check supported Ryzen AI processors in &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/requirements/">Hardware &amp;amp; Quickstart&lt;/a>
+.&lt;/p>
+ &lt;/div>
+ &lt;/div>&lt;h2 id="system-requirements">System Requirements &lt;a href="#system-requirements" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Component&lt;/th>
+ &lt;th>Requirement&lt;/th>
+ &lt;th>Status&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>Ryzen AI 300 / 400 / Max 300 / Z2 Extreme&lt;/td>
+ &lt;td>AMD XDNA2 NPU (&lt;code>/dev/accel/accel*&lt;/code>)&lt;/td>
+ &lt;td>Supported&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Ryzen 7040 / 8040 / 200-series&lt;/td>
+ &lt;td>Phoenix, Hawk Point (XDNA1)&lt;/td>
+ &lt;td>Unsupported&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>NPU firmware&lt;/td>
+ &lt;td>&lt;code>1.1.0.0&lt;/code> or newer&lt;/td>
+ &lt;td>Required&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Kernel driver&lt;/td>
+ &lt;td>Linux &lt;code>6.17+&lt;/code> in-tree &lt;code>amdxdna&lt;/code>, or &lt;code>amdxdna-dkms&lt;/code>&lt;/td>
+ &lt;td>Required&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Userspace runtime&lt;/td>
+ &lt;td>AMD XRT + &lt;code>libxrt_driver_xdna.so.2&lt;/code> (or bundled &lt;code>.tar.gz&lt;/code>)&lt;/td>
+ &lt;td>Required&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Locked memory&lt;/td>
+ &lt;td>&lt;code>ulimit -l unlimited&lt;/code> for NPU memory buffers&lt;/td>
+ &lt;td>Required&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Python&lt;/td>
+ &lt;td>Python &lt;code>3.8+&lt;/code> (used by &lt;code>oflm add&lt;/code>)&lt;/td>
+ &lt;td>Required&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="step-1-driver-and-xrt-setup">1. Driver and XRT Setup &lt;a href="#step-1-driver-and-xrt-setup" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;h3 id="ubuntu-2404-2510-and-2604">Ubuntu 24.04, 25.10, and 26.04 &lt;a href="#ubuntu-2404-2510-and-2604" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>Add the Lemonade XRT PPA (&lt;a href="https://launchpad.net/~lemonade-team/&amp;#43;archive/ubuntu/stable" target="_blank" rel="noopener noreferrer">&lt;code>ppa:lemonade-team/stable&lt;/code>&lt;/a>
+) and install the XRT runtime and DKMS driver:&lt;/p></description></item><item><title>Docker</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/docker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/docker/</guid><description>&lt;p>Run &lt;code>oflm serve&lt;/code> inside an &lt;code>x86_64&lt;/code> Linux container with &lt;code>/dev/accel/accel0&lt;/code> NPU passthrough, persistent &lt;code>./oflm-data&lt;/code> and &lt;code>./npu-cache&lt;/code> volumes, and HTTP API access on &lt;code>127.0.0.1:52625&lt;/code>.&lt;/p>
+&lt;h2 id="host-prerequisites">Host Prerequisites &lt;a href="#host-prerequisites" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;p>Install the host &lt;code>amdxdna&lt;/code> kernel driver and NPU firmware (&lt;code>1.1.0.0+&lt;/code>) first so &lt;code>/dev/accel/accel0&lt;/code> exists on the Linux host (see &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/packages/">Packages&lt;/a>
+ or &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/nix/">Nix &amp;amp; NixOS&lt;/a>
+).&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Official runtime image (&lt;code>openflowlm:runtime&lt;/code>):&lt;/strong> Bundles userspace &lt;code>libxrt2&lt;/code> and &lt;code>libxrt-npu2&lt;/code> inside the Ubuntu 26.04 container, so host userspace XRT libraries are not required.&lt;/li>
+&lt;li>&lt;strong>Custom minimal containers:&lt;/strong> If you build a custom image without in-container XRT packages, bind-mount host XRT (&lt;code>-v /opt/xilinx/xrt:/opt/xilinx/xrt:ro&lt;/code>) and set &lt;code>LD_LIBRARY_PATH=/opt/xilinx/xrt/lib&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>Memory locking:&lt;/strong> Always grant &lt;code>--cap-add=IPC_LOCK&lt;/code> and &lt;code>--ulimit memlock=-1:-1&lt;/code> so XRT can pin NPU memory buffers.&lt;/li>
+&lt;/ul>
+&lt;h2 id="build-and-run-with-docker-compose">Build and Run with Docker Compose &lt;a href="#build-and-run-with-docker-compose" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>Clone the repository with submodules and build the &lt;code>.deb&lt;/code> package inside the containerized builder:&lt;/p></description></item><item><title>Nix &amp; NixOS</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/nix/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/nix/</guid><description>&lt;p>Install and run OpenFlowLM (&lt;code>x86_64-linux&lt;/code>) via the &lt;code>.#oflm&lt;/code> Nix flake, Home Manager, or the declarative &lt;code>programs.openflowlm&lt;/code> NixOS module, with user models and settings stored in &lt;code>~/.config/oflm/&lt;/code>.&lt;/p>
+&lt;h2 id="quick-start">Quick Start &lt;a href="#quick-start" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;div class="oflm-two-col">
+ &lt;div class="oflm-card">
+&lt;h3 id="run-directly-via-flake">Run Directly via Flake &lt;a href="#run-directly-via-flake" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h3>&lt;div class="prism-codeblock">&lt;pre id="7997310" class="language-bash ">&lt;code>nix run \
+ github:Atomic-Germ/OpenFlowLM-Next#oflm \
+ -- --help
+
+# Or from a local checkout:
+nix run .#oflm -- list&lt;/code>&lt;/pre>&lt;/div> &lt;/div>
+ &lt;div class="oflm-card">
+&lt;h3 id="minimal-nixos-configuration">Minimal NixOS Configuration &lt;a href="#minimal-nixos-configuration" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h3>&lt;div class="prism-codeblock">&lt;pre id="014f5a2" class="language-nix ">&lt;code>{
+ programs.openflowlm = {
+ enable = true;
+ enableNPU = true;
+ };
+}&lt;/code>&lt;/pre>&lt;/div> &lt;/div>
+&lt;/div>
+&lt;h2 id="declarative-nixos-module">Declarative NixOS Module &lt;a href="#declarative-nixos-module" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;p>Import &lt;code>openflowlm.nixosModules.default&lt;/code> in your system &lt;code>flake.nix&lt;/code> to configure both the AMD NPU hardware stack and OpenFlowLM in one step:&lt;/p></description></item></channel></rss>

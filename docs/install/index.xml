@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Getting Started on OpenFlowLM</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/</link><description>Recent content in Getting Started on OpenFlowLM</description><generator>Hugo</generator><language>en-US</language><atom:link href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/index.xml" rel="self" type="application/rss+xml"/><item><title>Hardware &amp; Quickstart</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/requirements/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/requirements/</guid><description>&lt;p>OpenFlowLM runs on &lt;strong>Windows &amp;amp; Linux&lt;/strong> systems equipped with an AMD Ryzen AI processor featuring an XDNA2 NPU.&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Requirement&lt;/th>
+ &lt;th>Specification&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;strong>NPU Architecture&lt;/strong>&lt;/td>
+ &lt;td>AMD XDNA2 (Ryzen AI &lt;code>50+ TOPS&lt;/code> NPU)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;strong>Minimum RAM&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>16 GB&lt;/code> (&lt;code>1B&lt;/code> to &lt;code>4B&lt;/code> models)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;strong>Recommended RAM&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>32 GB+&lt;/code> (&lt;code>8B+&lt;/code> LLMs, Mixture-of-Experts models, long context windows, and image generation)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;strong>Operating Systems&lt;/strong>&lt;/td>
+ &lt;td>Windows &amp;amp; Linux (&lt;code>x86_64&lt;/code>)&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="processor-compatibility">Processor Compatibility &lt;a href="#processor-compatibility" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Processor Family&lt;/th>
+ &lt;th>Codename&lt;/th>
+ &lt;th>NPU Generation&lt;/th>
+ &lt;th>Status&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>Ryzen AI Max 300-series&lt;/td>
+ &lt;td>Strix Halo&lt;/td>
+ &lt;td>XDNA2&lt;/td>
+ &lt;td>&lt;span class="oflm-badge ok">&lt;span class="material-icons" aria-hidden="true">check_circle&lt;/span>&lt;span class="">Supported&lt;/span>&lt;/span>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Ryzen AI 300-series&lt;/td>
+ &lt;td>Strix Point, Kraken Point&lt;/td>
+ &lt;td>XDNA2&lt;/td>
+ &lt;td>&lt;span class="oflm-badge ok">&lt;span class="material-icons" aria-hidden="true">check_circle&lt;/span>&lt;span class="">Supported&lt;/span>&lt;/span>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Ryzen AI 400-series&lt;/td>
+ &lt;td>Gorgon Point&lt;/td>
+ &lt;td>XDNA2&lt;/td>
+ &lt;td>&lt;span class="oflm-badge ok">&lt;span class="material-icons" aria-hidden="true">check_circle&lt;/span>&lt;span class="">Supported&lt;/span>&lt;/span>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Ryzen Z2 Extreme&lt;/td>
+ &lt;td>Handheld APUs&lt;/td>
+ &lt;td>XDNA2&lt;/td>
+ &lt;td>&lt;span class="oflm-badge ok">&lt;span class="material-icons" aria-hidden="true">check_circle&lt;/span>&lt;span class="">Supported&lt;/span>&lt;/span>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Ryzen 7040 / 8040 / 200-series&lt;/td>
+ &lt;td>Phoenix, Hawk Point&lt;/td>
+ &lt;td>XDNA1&lt;/td>
+ &lt;td>&lt;span class="oflm-badge unsupported" data-oflm-tip="Not supported in OpenFlowLM">&lt;span class="material-icons" aria-hidden="true">block&lt;/span>&lt;span class="oflm-strike">Unsupported&lt;/span>&lt;/span>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="operating-system-support">Operating System Support &lt;a href="#operating-system-support" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Operating System&lt;/th>
+ &lt;th>Supported Environments &amp;amp; Packages&lt;/th>
+ &lt;th>Install Guides&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;strong>Windows&lt;/strong>&lt;/td>
+ &lt;td>Windows 11 (&lt;code>x64&lt;/code>, 24H2 recommended) with AMD Ryzen AI NPU driver &lt;code>32.0.203.304+&lt;/code> and &lt;code>oflm-setup.msi&lt;/code>&lt;/td>
+ &lt;td>&lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/windows/">Windows&lt;/a>
+&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;strong>Linux&lt;/strong>&lt;/td>
+ &lt;td>Ubuntu &lt;code>.deb&lt;/code>, Fedora &lt;code>.rpm&lt;/code>, Arch &amp;amp; portable &lt;code>.tar.gz&lt;/code>, Docker, and Nix / NixOS (&lt;code>x86_64&lt;/code>)&lt;/td>
+ &lt;td>&lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/">Linux Overview&lt;/a>
+ · &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/packages/">Packages&lt;/a>
+ · &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/docker/">Docker&lt;/a>
+ · &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/nix/">Nix &amp;amp; NixOS&lt;/a>
+&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="quickstart">3-Step Quickstart &lt;a href="#quickstart" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;h3 id="step-1-validate-your-npu">1. Validate Your NPU &lt;a href="#step-1-validate-your-npu" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h3>&lt;p>Confirm that your NPU driver and OpenFlowLM runtime detect your Ryzen AI processor:&lt;/p></description></item><item><title>Windows</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/windows/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/windows/</guid><description>&lt;p>Install OpenFlowLM on Windows 11 (&lt;code>x64&lt;/code>, 24H2 recommended) with an AMD Ryzen AI XDNA2 processor, NPU driver &lt;code>32.0.203.304+&lt;/code>, and at least &lt;code>16 GB&lt;/code> of RAM (&lt;code>32 GB+&lt;/code> recommended).&lt;/p>
+&lt;h2 id="step-1-hardware-and-driver">1. Hardware &amp;amp; NPU Driver Compatibility &lt;a href="#step-1-hardware-and-driver" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Processor / Driver&lt;/th>
+ &lt;th>Requirement&lt;/th>
+ &lt;th>NPU&lt;/th>
+ &lt;th>Status&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>Ryzen AI 300 / 400 / Max 300 / Z2 Extreme&lt;/td>
+ &lt;td>AMD Ryzen AI NPU driver &lt;code>32.0.203.304+&lt;/code> (&lt;a href="https://www.amd.com/en/support" target="_blank" rel="noopener noreferrer">AMD Support&lt;/a>
+)&lt;/td>
+ &lt;td>XDNA2&lt;/td>
+ &lt;td>Supported&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Older NPU drivers&lt;/td>
+ &lt;td>&lt;code>&amp;lt; 32.0.203.304&lt;/code>&lt;/td>
+ &lt;td>XDNA2&lt;/td>
+ &lt;td>Unsupported&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Ryzen 7040 / 8040 / 200-series&lt;/td>
+ &lt;td>Phoenix, Hawk Point&lt;/td>
+ &lt;td>XDNA1&lt;/td>
+ &lt;td>Unsupported&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;p>Check your installed driver version in &lt;strong>Task Manager -&amp;gt; Performance -&amp;gt; NPU&lt;/strong> or &lt;strong>Device Manager -&amp;gt; Neural processors -&amp;gt; NPU Compute Accelerator Device&lt;/strong>.&lt;/p></description></item></channel></rss>

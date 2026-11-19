@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Contributing on OpenFlowLM</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/</link><description>Recent content in Contributing on OpenFlowLM</description><generator>Hugo</generator><language>en-US</language><atom:link href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/index.xml" rel="self" type="application/rss+xml"/><item><title>Build System</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/build/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/build/</guid><description>&lt;p>OpenFlowLM compiles both the &lt;code>oflm&lt;/code> binary and open MLIR-AIE / IRON NPU kernel sets (&lt;code>.xclbin&lt;/code>, &lt;code>.elf&lt;/code>, &lt;code>insts.bin&lt;/code>, and &lt;code>manifest.json&lt;/code>) from source via CMake presets. Open kernels are built locally rather than checked into git (remaining prebuilt &lt;code>.xclbin&lt;/code> folders in &lt;code>src/xclbins/&lt;/code> are inherited legacy artifacts being phased out; Nix builds strip them via &lt;a href="https://github.com/Atomic-Germ/OpenFlowLM-Next/issues/244" target="_blank" rel="noopener noreferrer">#244&lt;/a>
+).&lt;/p>
+&lt;h2 id="two-preset-scopes">Two Preset Scopes &lt;a href="#two-preset-scopes" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;div class="oflm-two-col">
+ &lt;div class="oflm-card">
+&lt;h3 id="scope-repo-root">1. Repository Root (Full Distribution) &lt;a href="#scope-repo-root" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h3>&lt;p>Builds the engine, exports all open NPU kernels (bootstrapping &lt;code>ironvenv&lt;/code>), and installs &lt;code>/opt/openflowlm&lt;/code>:&lt;/p></description></item><item><title>Code Contributions</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/code-contributions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/code-contributions/</guid><description>&lt;p>Contribute C++ and Rust changes across OpenFlowLM&amp;rsquo;s inference engines and &lt;code>oflm&lt;/code> CLI. Open a &lt;a href="https://github.com/Atomic-Germ/OpenFlowLM-Next/issues" target="_blank" rel="noopener noreferrer">GitHub Issue&lt;/a>
+ first before starting large refactors.&lt;/p>
+&lt;h2 id="style--performance-rules">Style &amp;amp; Performance Rules &lt;a href="#style--performance-rules" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>&lt;strong>Conventions:&lt;/strong> Match surrounding code: &lt;code>snake_case&lt;/code> functions/variables, &lt;code>PascalCase&lt;/code> types, &lt;code>UPPER_SNAKE_CASE&lt;/code> constants, and &lt;code>_member&lt;/code> private fields where already used.&lt;/li>
+&lt;li>&lt;strong>Explicit errors:&lt;/strong> Propagate XRT, file, and dispatch errors with actionable context; never swallow failures or fall back silently.&lt;/li>
+&lt;li>&lt;strong>Measured speedups:&lt;/strong> Record &lt;code>oflm bench&lt;/code> or &lt;code>oflm bench-embed&lt;/code> throughput across short and long contexts (up to 256k tokens where supported) before and after performance changes.&lt;/li>
+&lt;/ul>
+&lt;h2 id="engine-subsystems">Engine Subsystems &lt;a href="#engine-subsystems" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Path&lt;/th>
+ &lt;th>Subsystem&lt;/th>
+ &lt;th>Role&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>src/open_qwen36/&lt;/code>&lt;/td>
+ &lt;td>Open LLM, MoE &amp;amp; VLM Engine&lt;/td>
+ &lt;td>Executes &lt;code>manifest.json&lt;/code> layer programs and streams GGUF pools (&lt;code>Q4_0&lt;/code>, &lt;code>Q4_1&lt;/code>, &lt;code>Q4_K&lt;/code>, &lt;code>Q5_K&lt;/code>, &lt;code>Q6_K&lt;/code>, &lt;code>Q8_0&lt;/code>, &lt;code>IQ4&lt;/code>, &lt;code>BF16&lt;/code>)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>src/open_npue/&lt;/code>&lt;/td>
+ &lt;td>Open NPUE&lt;/td>
+ &lt;td>Runs batched BERT/BGE/Nomic/MiniLM/GTE encoders on &lt;code>BERT-h*&lt;/code> kernel sets&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>src/open_embedding/&lt;/code>&lt;/td>
+ &lt;td>Open EmbeddingGemma&lt;/td>
+ &lt;td>Runs &lt;code>embed-gemma:300m&lt;/code> GGUF linear projections on &lt;code>npu_matmul_f32&lt;/code> + CPU attention&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>src/open_diffusion/&lt;/code>&lt;/td>
+ &lt;td>Open Diffusion&lt;/td>
+ &lt;td>Runs FLUX.2 [klein] 4B generation and editing in one context via full-ELF reconfiguration&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>src/open_whisper/&lt;/code>&lt;/td>
+ &lt;td>Open Whisper&lt;/td>
+ &lt;td>Open encoder GEMM + CPU decoder runtime (not yet wired into default &lt;code>export-kernels.py&lt;/code>, &lt;a href="https://github.com/Atomic-Germ/OpenFlowLM-Next/issues/240" target="_blank" rel="noopener noreferrer">#240&lt;/a>
+)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>src/src/&lt;/code>, &lt;code>src/include/utils/vm_args.hpp&lt;/code>&lt;/td>
+ &lt;td>&lt;code>oflm&lt;/code> CLI &amp;amp; Server&lt;/td>
+ &lt;td>Implements subcommands and HTTP routes (no &lt;code>--log-level&lt;/code> flag; use &lt;code>/verbose&lt;/code> in &lt;code>oflm run&lt;/code>)&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2 id="development--ci-checklist">Development &amp;amp; CI Checklist &lt;a href="#development--ci-checklist" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Branch &amp;amp; stage explicitly:&lt;/strong>&lt;/p></description></item><item><title>Kernel Contributions</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/kernel-contributions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/kernel-contributions/</guid><description>&lt;p>&lt;code>open_kernels/&lt;/code> holds OpenFlowLM&amp;rsquo;s MLIR-AIE / IRON designs compiled into &lt;code>.xclbin&lt;/code> and &lt;code>.elf&lt;/code> artifacts alongside a generated &lt;code>manifest.json&lt;/code> interpreted by &lt;code>src/open_qwen36&lt;/code>.&lt;/p>
+&lt;div class="alert alert-success d-flex my-3" role="alert">
+ &lt;div class="flex-shrink-1 alert-icon">
+ &lt;span class="material-icons size-20 me-2">lightbulb&lt;/span>
+ &lt;/div>
+ &lt;div class="w-100">
+ &lt;p>Read &lt;a href="https://github.com/Atomic-Germ/OpenFlowLM-Next/blob/main/.agents/skills/open-kernel-pipeline/SKILL.md" target="_blank" rel="noopener noreferrer">&lt;code>.agents/skills/open-kernel-pipeline/SKILL.md&lt;/code>&lt;/a>
+ and &lt;a href="https://github.com/Atomic-Germ/OpenFlowLM-Next/blob/main/.agents/skills/open-kernel-families/SKILL.md" target="_blank" rel="noopener noreferrer">&lt;code>.agents/skills/open-kernel-families/SKILL.md&lt;/code>&lt;/a>
+ for recipe internals and tiling constraints.&lt;/p>
+ &lt;/div>
+ &lt;/div>&lt;h2 id="geometry-driven-pipeline">Geometry-Driven Pipeline &lt;a href="#geometry-driven-pipeline" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;p>Tensor dimensions define a kernel set rather than repository names. Fine-tunes reuse their base model&amp;rsquo;s compiled kernel set with zero rebuilds; new sizes build via one command; only new layer arithmetic requires recipe or operator code.&lt;/p></description></item><item><title>Test Contributions</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/test-contributions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/test-contributions/</guid><description>&lt;p>OpenFlowLM verifies changes across four layers: fast CTest unit/smoke binaries, live &lt;code>oflm-test&lt;/code> server conformance, XDNA2 operator verification, and static CI verifiers.&lt;/p>
+&lt;h2 id="test-suites">Test Suites &lt;a href="#test-suites" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Layer&lt;/th>
+ &lt;th>Location&lt;/th>
+ &lt;th>What It Checks&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>CTest targets&lt;/td>
+ &lt;td>&lt;code>CMakeLists.txt&lt;/code>, &lt;code>src/test/&lt;/code>&lt;/td>
+ &lt;td>&lt;code>oflm_smoke&lt;/code>, &lt;code>openai_compat&lt;/code>, &lt;code>OPEN-VISION-IMAGE-READ&lt;/code>, &lt;code>bench_embed&lt;/code>, and &lt;code>add_npu_test()&lt;/code> fixtures&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Live API suite&lt;/td>
+ &lt;td>&lt;code>utilities/oflm-test/&lt;/code>&lt;/td>
+ &lt;td>Running &lt;code>oflm serve&lt;/code> across &lt;code>--llm&lt;/code>, &lt;code>--vision&lt;/code>, &lt;code>--audio&lt;/code>, &lt;code>--embedding&lt;/code>, &lt;code>--tools&lt;/code>, and &lt;code>--api&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Operator checks&lt;/td>
+ &lt;td>&lt;code>utilities/build-new-spec.py&lt;/code>, &lt;code>open_kernels/designs/&lt;/code>&lt;/td>
+ &lt;td>NPU outputs vs. FP64/NumPy references before updating &lt;code>catalogue.py&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Static verifiers&lt;/td>
+ &lt;td>&lt;code>utilities/&lt;/code>&lt;/td>
+ &lt;td>&lt;code>check-settings-ci.sh&lt;/code> (flags/env vars) and &lt;code>check_embed_bench_docs.py&lt;/code> (published &lt;code>bench-embed&lt;/code> numbers)&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2 id="running-tests">Running Tests &lt;a href="#running-tests" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;div class="prism-codeblock">&lt;pre id="c938430" class="language-bash ">&lt;code># 1. CTest smoke &amp;amp; unit suite
+cmake --preset linux-default &amp;amp;&amp;amp; cmake --build --preset linux-default
+ctest --preset linux-default --output-on-failure
+ctest --preset linux-default -R openai_compat -V
+
+# 2. Live server conformance (start &amp;#39;oflm serve qwen3.5:4b -e 1&amp;#39; in another terminal)
+oflm-test --all
+oflm-test --llm --tools --model qwen3.5:4b
+oflm-test --embedding
+
+# 3. Kernel export &amp;amp; hardware verification
+source utilities/env.sh
+python utilities/build-new-spec.py --repo Qwen/Qwen3-8B&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="authoring-guidelines--benchmarks">Authoring Guidelines &amp;amp; Benchmarks &lt;a href="#authoring-guidelines--benchmarks" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>&lt;strong>Cover refusals:&lt;/strong> Test malformed JSON, unknown tags, and unsupported flags alongside happy paths, asserting non-zero exits and clear messages.&lt;/li>
+&lt;li>&lt;strong>No external network calls:&lt;/strong> Use bundled sample assets or deterministic synthetic inputs.&lt;/li>
+&lt;li>&lt;strong>Guard NPU-less CI:&lt;/strong> GitHub Actions runs &lt;code>linux-debug&lt;/code> (&lt;code>OFLM_BUILD_KERNELS=OFF&lt;/code>) without &lt;code>/dev/accel/accel0&lt;/code>; CTest smoke targets must skip cleanly when no NPU is present, and &lt;code>utilities/check-settings-ci.sh&lt;/code> catches unclassified flags merged from &lt;code>origin/main&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;p>Benchmark throughput and upload results to the &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/benchmarks/">Benchmarks hub&lt;/a>
+ (see &lt;a href="https://github.com/Atomic-Germ/OpenFlowLM-Next/blob/main/utilities/oflm-test/README.md" target="_blank" rel="noopener noreferrer">&lt;code>utilities/oflm-test/README.md&lt;/code>&lt;/a>
+):&lt;/p></description></item><item><title>Tool Contributions</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/tool-contributions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/tool-contributions/</guid><description>&lt;p>Python toolchain utilities live under &lt;code>utilities/&lt;/code>. Place reusable &lt;code>.xclbin&lt;/code> or library inspection scripts inside &lt;code>utilities/&lt;/code> rather than temporary directories.&lt;/p>
+&lt;h2 id="utilities-map">Utilities Map &lt;a href="#utilities-map" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Tool&lt;/th>
+ &lt;th>Location&lt;/th>
+ &lt;th>Status &amp;amp; Role&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>oflm-add&lt;/code>&lt;/td>
+ &lt;td>&lt;code>utilities/oflm-add/&lt;/code>&lt;/td>
+ &lt;td>&lt;strong>Active&lt;/strong> (&lt;code>oflm add&lt;/code>): stdlib-only GGUF/HF/ModelScope installer, &lt;code>spec_hash&lt;/code> kernel linker, and &lt;code>settings.json&lt;/code> writer&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm-test&lt;/code>&lt;/td>
+ &lt;td>&lt;code>utilities/oflm-test/&lt;/code>&lt;/td>
+ &lt;td>&lt;strong>Active&lt;/strong>: live server conformance suite (&lt;code>--llm&lt;/code>, &lt;code>--vision&lt;/code>, &lt;code>--audio&lt;/code>, &lt;code>--embedding&lt;/code>, &lt;code>--tools&lt;/code>, &lt;code>--api&lt;/code>)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>env.sh&lt;/code> / &lt;code>env.fish&lt;/code>&lt;/td>
+ &lt;td>&lt;code>utilities/&lt;/code>&lt;/td>
+ &lt;td>&lt;strong>Active&lt;/strong>: discovers XRT, ROCm/HIP, &lt;code>mlir-aie&lt;/code>, Peano (&lt;code>PEANO_INSTALL_DIR&lt;/code>), and &lt;code>OFLM_*&lt;/code> paths (&lt;code>env.sh --check&lt;/code>)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Kernel scripts&lt;/td>
+ &lt;td>&lt;code>utilities/&lt;/code>&lt;/td>
+ &lt;td>&lt;strong>Active&lt;/strong>: &lt;code>export-kernels.py&lt;/code>, &lt;code>gen-kernel-spec.py&lt;/code>, &lt;code>build-new-spec.py&lt;/code>, &lt;code>catalogue-add-point.py&lt;/code>, &lt;code>register-spec.py&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Settings &amp;amp; CI&lt;/td>
+ &lt;td>&lt;code>utilities/&lt;/code>&lt;/td>
+ &lt;td>&lt;strong>Active&lt;/strong>: &lt;code>generate-registry.py&lt;/code>, &lt;code>scan-settings.py&lt;/code>, &lt;code>check-settings-ci.sh&lt;/code>, &lt;code>check_embed_bench_docs.py&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>bench-configs&lt;/code> / &lt;code>binary-inventory&lt;/code>&lt;/td>
+ &lt;td>&lt;code>utilities/&lt;/code>&lt;/td>
+ &lt;td>&lt;strong>Active&lt;/strong>: sweep configs/logs and &lt;code>precompiled_artifacts.json&lt;/code> auditor&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>q4nx-build&lt;/code>&lt;/td>
+ &lt;td>&lt;code>utilities/q4nx-build/&lt;/code>&lt;/td>
+ &lt;td>&lt;strong>Deprecated&lt;/strong>: legacy &lt;code>.q4nx&lt;/code> maintenance only (never add new builders or formats)&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2 id="working-on-oflm-add-and-oflm-test">Working on &lt;code>oflm-add&lt;/code> and &lt;code>oflm-test&lt;/code> &lt;a href="#working-on-oflm-add-and-oflm-test" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;div class="oflm-two-col">
+ &lt;div class="oflm-card">
+&lt;h3 id="oflm-add-readme">&lt;code>oflm-add&lt;/code> (&lt;a href="https://github.com/Atomic-Germ/OpenFlowLM-Next/blob/main/utilities/oflm-add/README.md" target="_blank" rel="noopener noreferrer">README&lt;/a>
+) &lt;a href="#oflm-add-readme" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h3>&lt;p>Keep &lt;code>oflm-add&lt;/code> strictly on the Python 3 standard library. It verifies GGUF quant types (&lt;code>Q4_1&lt;/code>, &lt;code>Q4_0&lt;/code>, &lt;code>Q4_K&lt;/code>, &lt;code>Q5_K&lt;/code>, &lt;code>Q6_K&lt;/code>, &lt;code>Q8_0&lt;/code>, &lt;code>IQ4&lt;/code>), walks &lt;code>base_model&lt;/code> metadata for templates, links &lt;code>&amp;lt;model&amp;gt;/open_kernels&lt;/code>, and writes &lt;code>settings.json&lt;/code> with zero manual steps:&lt;/p></description></item><item><title>Documentation Contributions</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/doc-contributions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/doc-contributions/</guid><description>&lt;p>OpenFlowLM&amp;rsquo;s website (&lt;code>openflowlm.org&lt;/code>) builds from &lt;code>docs/&lt;/code> using Hugo Extended (&lt;code>v0.140.0+&lt;/code>) and the Lotus Docs module.&lt;/p>
+&lt;h2 id="directory-layout">Directory Layout &lt;a href="#directory-layout" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;div class="prism-codeblock">&lt;pre id="e26821a" class="language-text ">&lt;code>docs/
+├── hugo.toml # Mounts, menus, and Lotus Docs config
+├── serve-docs.sh # Live-reload server &amp;amp; static build wrapper
+├── assets/ # SCSS (oflm-lotus.scss), JS charts, images/
+├── content/ # Top-level pages (/, /models/, /engines/, /benchmarks/, /team/)
+├── layouts/ # Custom layouts, badge/quants/wip shortcodes, alert hooks
+└── docs/ # Docs mounted at /docs/
+ ├── _index.md # Overview (/docs/)
+ ├── install/ # Getting Started (/docs/install/)
+ │ ├── requirements.md # Hardware &amp;amp; Quickstart (/docs/install/requirements/)
+ │ ├── windows.md # Windows (/docs/install/windows/)
+ │ └── linux/ # Linux (/docs/install/linux/{packages,docker,nix}/)
+ ├── instructions/ # User Guide (/docs/instructions/)
+ │ ├── cli.md # CLI Usage (/docs/instructions/cli/)
+ │ ├── config.md # Configuration (/docs/instructions/config/)
+ │ └── server/ # Server Mode (/docs/instructions/server/{basics,openapi,images,tool_calling,webui}/)
+ ├── models/ # Model family reference cards (/docs/models/*)
+ └── contributing/ # Contributor &amp;amp; developer guides (/docs/contributing/*)&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h2 id="authoring-rules">Authoring Rules &lt;a href="#authoring-rules" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Audience boundary &amp;amp; OS wording:&lt;/strong> Everything outside &lt;code>/docs/contributing/&lt;/code> targets OpenFlowLM users, not NPU kernel developers. Omit compiler or internal hardware jargon (&lt;code>MLIR-AIE&lt;/code>, &lt;code>IRON&lt;/code>, &lt;code>AIE2P&lt;/code>, &lt;code>memtiles&lt;/code>, &lt;code>WideDeltaNet&lt;/code>, &lt;code>BFP16ebs8&lt;/code>, &lt;code>Full-ELF&lt;/code>, or &lt;code>XCLBIN&lt;/code>) in user-facing prose. Summarize supported operating systems as &lt;strong>Windows &amp;amp; Linux&lt;/strong> (keeping exact OS versions such as Windows 11 for installer and driver requirements), with Packages, Docker, and Nix &amp;amp; NixOS nested under Linux (&lt;code>/docs/install/linux/&lt;/code>).&lt;/p></description></item><item><title>Semantic Versioning</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/semantic-versioning/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/contributing/semantic-versioning/</guid><description>&lt;p>OpenFlowLM releases follow &lt;a href="https://semver.org" target="_blank" rel="noopener noreferrer">Semantic Versioning&lt;/a>
+ (&lt;code>MAJOR.MINOR.PATCH&lt;/code>, with optional &lt;code>-beta.N&lt;/code> or &lt;code>+build.N&lt;/code> suffixes).&lt;/p>
+&lt;h2 id="increment-rules">Increment Rules &lt;a href="#increment-rules" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Component&lt;/th>
+ &lt;th>When to Increment&lt;/th>
+ &lt;th>Example&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>MAJOR&lt;/code>&lt;/td>
+ &lt;td>Breaking CLI, HTTP API, or container format changes (post-1.0)&lt;/td>
+ &lt;td>&lt;code>1.2.3 -&amp;gt; 2.0.0&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>MINOR&lt;/code>&lt;/td>
+ &lt;td>Backward-compatible features, model families, flags, or endpoints &lt;em>(may include breaking changes while &lt;code>0.x&lt;/code>)&lt;/em>&lt;/td>
+ &lt;td>&lt;code>0.4.0 -&amp;gt; 0.5.0&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>PATCH&lt;/code>&lt;/td>
+ &lt;td>Backward-compatible bug, accuracy, build, or documentation fixes&lt;/td>
+ &lt;td>&lt;code>0.4.0 -&amp;gt; 0.4.1&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;p>&lt;code>1.0.0&lt;/code> marks the first stable public contract; during &lt;code>0.x&lt;/code>, minor bumps may carry breaking changes.&lt;/p></description></item></channel></rss>

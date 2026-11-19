@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>User Guide on OpenFlowLM</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/instructions/</link><description>Recent content in User Guide on OpenFlowLM</description><generator>Hugo</generator><language>en-US</language><atom:link href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/instructions/index.xml" rel="self" type="application/rss+xml"/><item><title>CLI Usage</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/instructions/cli/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/instructions/cli/</guid><description>&lt;ul>
+&lt;li>&lt;a href="#system-commands">System Commands&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="#commands-inside-cli-mode">Commands Inside CLI Mode&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="#benchmarking-tool">Benchmarking Tool&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="#configuration-and-model-registration">Configuration and Model Registration&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="system-commands">System Commands &lt;a href="#system-commands" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Command&lt;/th>
+ &lt;th>Purpose&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>oflm validate [--json]&lt;/code>&lt;/td>
+ &lt;td>Verify NPU driver, firmware, &lt;code>memlock&lt;/code>, and XRT runtime&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm add &amp;lt;repo-or-file&amp;gt;&lt;/code>&lt;/td>
+ &lt;td>Download a GGUF repository or file and register it in &lt;code>settings.json&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm run &amp;lt;tag&amp;gt;&lt;/code>&lt;/td>
+ &lt;td>Start interactive terminal chat (downloads tag if missing)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm serve [tag]&lt;/code>&lt;/td>
+ &lt;td>Start the OpenAI- and Ollama-compatible HTTP server (&lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/instructions/server/">Server Mode&lt;/a>
+)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm image &amp;lt;tag&amp;gt; &amp;quot;&amp;lt;prompt&amp;gt;&amp;quot;&lt;/code>&lt;/td>
+ &lt;td>Generate or edit an image on the NPU&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm pull &amp;lt;tag&amp;gt; [--force]&lt;/code>&lt;/td>
+ &lt;td>Download a built-in shortcut tag (&lt;code>--force&lt;/code> overwrites corrupted files)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm list [--filter all|installed|not-installed] [--json] [--quiet]&lt;/code>&lt;/td>
+ &lt;td>List available and installed models&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm check &amp;lt;tag&amp;gt;&lt;/code>&lt;/td>
+ &lt;td>Verify SHA-256 hashes of downloaded files&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm remove &amp;lt;tag&amp;gt;&lt;/code>&lt;/td>
+ &lt;td>Delete a downloaded model from local storage&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm config [show|set|unset|browse|edit|review]&lt;/code>&lt;/td>
+ &lt;td>Manage persistent settings in &lt;code>settings.json&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm bench &amp;lt;tag&amp;gt;&lt;/code> / &lt;code>oflm bench-embed &amp;lt;tag&amp;gt;&lt;/code>&lt;/td>
+ &lt;td>Measure LLM or embedding NPU throughput&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm port&lt;/code>&lt;/td>
+ &lt;td>Print the resolved default server port&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm version [--json]&lt;/code>&lt;/td>
+ &lt;td>Print the installed release version&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>oflm help&lt;/code>&lt;/td>
+ &lt;td>Display CLI usage summary&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;div class="oflm-wip-box" role="note">
+ &lt;span class="material-icons size-20 oflm-wip-icon">construction&lt;/span>
+ &lt;div class="w-100">
+ &lt;span class="oflm-wip-title">Built-in Registry Migration (&lt;a href="https://github.com/Atomic-Germ/OpenFlowLM-Next/issues/240" target="_blank" rel="noopener noreferrer">#240&lt;/a>):&lt;/span>
+ &lt;span>&lt;code>oflm add &amp;lt;hf-repo-or-file&amp;gt;&lt;/code> already loads compatible GGUF models directly. Built-in &lt;code>oflm pull &amp;lt;tag&amp;gt;&lt;/code> shortcuts in &lt;code>model_list.json&lt;/code> are migrating from legacy &lt;code>.q4nx&lt;/code> archives to upstream GGUFs under #240, and speculative decoding (&lt;code>--speculative&lt;/code> / &lt;code>OFLM_SPECULATIVE&lt;/code>) is in progress under #189 and #240.&lt;/span>
+ &lt;/div>
+&lt;/div>
+
+&lt;div class="alert alert-info d-flex my-3" role="alert">
+ &lt;div class="flex-shrink-1 alert-icon">
+ &lt;span class="material-icons size-20 me-2">info&lt;/span>
+ &lt;/div>
+ &lt;div class="w-100">
+ &lt;p>On Linux, &lt;code>oflm validate&lt;/code> checks your &lt;code>/dev/accel/accel*&lt;/code> NPU device and XRT runtime. If &lt;code>--json&lt;/code> reports &lt;code>&amp;quot;runtime_ok&amp;quot;: false&lt;/code>, run &lt;code>xrt-smi examine&lt;/code> and verify &lt;code>xrt-plugin-amdxdna&lt;/code> is installed (see &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/install/linux/packages/">Packages&lt;/a>
+).&lt;/p></description></item><item><title>Configuration</title><link>https://danimalquackers.github.io/OpenFlowLM-Next/docs/instructions/config/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://danimalquackers.github.io/OpenFlowLM-Next/docs/instructions/config/</guid><description>&lt;p>OpenFlowLM separates built-in defaults from your personal configuration so software upgrades preserve your preferences and models registered via &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/instructions/cli/#add-a-model-oflm-add">&lt;code>oflm add&lt;/code>&lt;/a>
+:&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>File&lt;/th>
+ &lt;th>Owner&lt;/th>
+ &lt;th>Upgrade Behavior&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>model_list.json&lt;/code> (built-in)&lt;/td>
+ &lt;td>OpenFlowLM&lt;/td>
+ &lt;td>Replaced on upgrade&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>settings.json&lt;/code> (&lt;code>~/.config/oflm/settings.json&lt;/code> on Linux, &lt;code>%USERPROFILE%\.oflm\settings.json&lt;/code> on Windows)&lt;/td>
+ &lt;td>User&lt;/td>
+ &lt;td>Preserved across upgrades&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;p>&lt;code>settings.json&lt;/code> overlays &lt;code>model_list.json&lt;/code> at startup, storing only the settings and custom models you add or change.&lt;/p>
+&lt;div class="oflm-wip-box" role="note">
+ &lt;span class="material-icons size-20 oflm-wip-icon">construction&lt;/span>
+ &lt;div class="w-100">
+ &lt;span class="oflm-wip-title">Built-in Registry Migration (&lt;a href="https://github.com/Atomic-Germ/OpenFlowLM-Next/issues/240" target="_blank" rel="noopener noreferrer">#240&lt;/a>):&lt;/span>
+ &lt;span>&lt;code>oflm add &amp;lt;hf-repo-or-file&amp;gt;&lt;/code> already registers direct GGUF models in &lt;code>settings.json&lt;/code>. Built-in &lt;code>oflm pull &amp;lt;tag&amp;gt;&lt;/code> shortcuts in &lt;code>model_list.json&lt;/code> are migrating from legacy &lt;code>.q4nx&lt;/code> archives to upstream GGUFs under #240, and speculative decoding (&lt;code>--speculative&lt;/code> / &lt;code>OFLM_SPECULATIVE&lt;/code>) is in progress under #189 and #240.&lt;/span>
+ &lt;/div>
+&lt;/div>
+
+&lt;h2 id="precedence-storage-paths--server-bindings">Precedence, Storage Paths &amp;amp; Server Bindings &lt;a href="#precedence-storage-paths--server-bindings" class="anchor" aria-hidden="true">&lt;i class="material-icons align-middle">link&lt;/i>&lt;/a>&lt;/h2>&lt;p>Settings resolve from lowest to highest priority: &lt;code>model_list.json&lt;/code> -&amp;gt; &lt;code>settings.json&lt;/code> -&amp;gt; &lt;code>OFLM_*&lt;/code> environment variables -&amp;gt; &lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/instructions/cli/">CLI Usage&lt;/a>
+ flags -&amp;gt; per-request HTTP fields (&lt;a href="https://danimalquackers.github.io/OpenFlowLM-Next/docs/instructions/server/">Server Mode&lt;/a>
+).&lt;/p></description></item></channel></rss>
